@@ -11,16 +11,25 @@
 <div class="workbench">
 <aside class="left-panel panel">
   <div class="panel-tabs"><button id="tab-hierarchy" class="tab active" data-panel="hierarchy">图层 <span>LAYERS</span></button><button id="tab-assets" class="tab" data-panel="assets">素材 <span>ASSETS</span></button></div>
-  <section id="hierarchy-panel" class="sidebar-section"><div class="search-wrap"><span>⌕</span><input id="filter-nodes" placeholder="搜索图层名称" aria-label="搜索图层"></div><div class="list-heading"><span>场景层级</span><span>由下向上绘制</span></div><div id="node-list" class="node-list"></div><div class="panel-footer"><button id="duplicate-node" title="复制选中图层">＋ 复制图层</button><button id="delete-node" class="danger-text" title="删除选中图层">删除</button></div></section>
+  <section id="hierarchy-panel" class="sidebar-section">
+    <div class="layer-heading"><span>图层</span><span class="small-label">LAYERS</span></div>
+    <div id="layer-list" class="layer-list" aria-label="图层列表"></div>
+    <div class="layer-actions"><button id="add-layer" title="新增图层">＋</button><button id="rename-layer" title="重命名图层">重命名</button><button id="layer-up" title="图层上移" aria-label="图层上移">↑</button><button id="layer-down" title="图层下移" aria-label="图层下移">↓</button><button id="delete-layer" class="danger-text" title="删除图层">删除</button></div>
+    <label class="layer-edit-option"><input id="layer-edit-mode" type="checkbox" checked>仅编辑当前层</label>
+    <div class="element-heading"><span>元素 <strong id="active-layer-name">未选择图层</strong></span><span>层内排序</span></div>
+    <div class="search-wrap"><span>⌕</span><input id="filter-nodes" placeholder="搜索当前层元素" aria-label="搜索当前层元素"></div>
+    <div id="node-list" class="node-list"></div>
+    <div class="panel-footer"><button id="duplicate-node" title="复制选中元素">＋ 复制元素</button><button id="delete-node" class="danger-text" title="删除选中元素">删除</button></div>
+  </section>
   <section id="assets-panel" class="sidebar-section" hidden><div class="section-intro">素材库 <span>图像资源</span></div><p class="asset-hint">导入 PNG、JPG 等图像，再放入画布。</p><button id="add-image" class="upload-button">＋ 导入图片</button><div id="asset-list" class="asset-list"></div></section>
   <div class="sidebar-note"><span class="note-dot"></span>图片与布局在本机编辑</div>
 </aside>
 <main class="canvas-panel">
   <div class="canvas-toolbar"><div class="history-controls"><button id="undo" title="撤销" aria-label="撤销">↶</button><button id="redo" title="重做" aria-label="重做">↷</button><span class="toolbar-divider"></span><span class="canvas-title">界面画布</span></div><div class="canvas-settings"><label>尺寸 <input id="canvas-width" type="number" min="1" value="1672" aria-label="画布宽度"><span>×</span><input id="canvas-height" type="number" min="1" value="941" aria-label="画布高度"></label><span class="toolbar-divider"></span><label class="check-control"><input id="grid-toggle" type="checkbox">网格</label><label class="check-control"><input id="snap-toggle" type="checkbox" checked>吸附</label><label class="check-control"><input id="reference-toggle" type="checkbox">参考图</label></div></div>
   <div id="stage-wrap" class="stage-wrap"><div id="stage" class="stage" aria-label="可编辑游戏界面画布"></div></div>
-  <div class="canvas-bottom"><span class="canvas-tip"><kbd>拖动</kbd> 移动图层 <span>·</span> 选中图层后调整属性</span><div class="zoom-controls"><button id="zoom-out" aria-label="缩小">−</button><span id="zoom-label">100%</span><button id="zoom-in" aria-label="放大">＋</button><span class="toolbar-divider"></span><button id="fit-view">适应画布</button></div></div>
+  <div class="canvas-bottom"><span class="canvas-tip"><kbd>拖动</kbd> 移动元素 <span>·</span> 先选图层，再编辑元素</span><div class="zoom-controls"><button id="zoom-out" aria-label="缩小">−</button><span id="zoom-label">100%</span><button id="zoom-in" aria-label="放大">＋</button><span class="toolbar-divider"></span><button id="fit-view">适应画布</button></div></div>
 </main>
-<aside class="right-panel panel"><div class="inspector-heading"><span>属性检查器</span><span class="small-label">INSPECTOR</span></div><div id="inspector-fields" class="inspector-fields"><div class="empty-state"><span class="empty-icon">⌖</span><strong>选择一个图层</strong><p>在画布或左侧列表中选择对象，<br>调整位置、尺寸和显示属性。</p></div></div><div class="inspector-note"><span>工作流</span><p>编辑布局 → 导出 JSON<br>或应用到本地主城查看效果</p></div></aside>
+<aside class="right-panel panel"><div class="inspector-heading"><span>属性检查器</span><span class="small-label">INSPECTOR</span></div><div id="inspector-fields" class="inspector-fields"><div class="empty-state"><span class="empty-icon">⌖</span><strong>选择一个元素</strong><p>在画布或左侧列表中选择对象，<br>调整位置、尺寸和显示属性。</p></div></div><div class="inspector-note"><span>工作流</span><p>编辑布局 → 导出 JSON<br>或应用到本地主城查看效果</p></div></aside>
 </div>
 <footer class="statusbar"><div><span class="status-dot"></span><span id="status" role="status" aria-live="polite">编辑器就绪</span></div><span>城构 <span class="status-separator">/</span> 2D 界面布局工具</span></footer>
 </div>

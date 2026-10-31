@@ -111,7 +111,7 @@
   "baselineRestored": true,
   "finalBuildFinished": true,
   "finalBuildErrors": "",
-  "finalBuildCompletion": "2026-11-1 00:28:56 - debug: ================================ build Task (web-desktop) Finished in (5 s)ms ================================",
+  "finalBuildCompletion": "2026-11-1 07:50:02 - debug: ================================ build Task (web-desktop) Finished in (4 s)ms ================================",
   "finalGameLayoutSha256": "e1f31fd171b48cfd2fbd5932728fb154623c3a31188c3c776a45fecb753b4319",
   "notes": [
     "12 actual runtime transform assertions per phase; baseline restored through same POST route and rebuilt",
@@ -166,5 +166,312 @@
     },
     "errors": []
   },
-  "baselineNodes": 33
+  "baselineNodes": 38,
+  "layers": [
+    {
+      "id": "background",
+      "name": "背景",
+      "z": 0,
+      "visible": true,
+      "locked": false
+    },
+    {
+      "id": "buildings",
+      "name": "建筑",
+      "z": 1,
+      "visible": true,
+      "locked": false
+    },
+    {
+      "id": "characters",
+      "name": "角色",
+      "z": 2,
+      "visible": true,
+      "locked": false
+    },
+    {
+      "id": "flags",
+      "name": "旗帜",
+      "z": 3,
+      "visible": true,
+      "locked": false
+    },
+    {
+      "id": "ui",
+      "name": "界面",
+      "z": 4,
+      "visible": true,
+      "locked": false
+    }
+  ],
+  "layerVisibility": {
+    "mode": "hidden-ui-layer",
+    "date": "2026-10-31T23:49:33.689Z",
+    "assertions": [
+      "all14UI art inactive",
+      "all12HUD hit areas inactive",
+      "three resource labels inactive",
+      "nine character nodes remain active"
+    ],
+    "state": {
+      "hidden": [
+        {
+          "name": "Art_hud-portrait",
+          "active": false
+        },
+        {
+          "name": "Art_hud-gold",
+          "active": false
+        },
+        {
+          "name": "ResourcePlus_gold",
+          "active": false
+        },
+        {
+          "name": "Art_hud-grain",
+          "active": false
+        },
+        {
+          "name": "ResourcePlus_grain",
+          "active": false
+        },
+        {
+          "name": "Art_hud-jade",
+          "active": false
+        },
+        {
+          "name": "ResourcePlus_jade",
+          "active": false
+        },
+        {
+          "name": "Art_hud-activity",
+          "active": false
+        },
+        {
+          "name": "Utility_活动",
+          "active": false
+        },
+        {
+          "name": "Art_hud-task",
+          "active": false
+        },
+        {
+          "name": "Utility_任务",
+          "active": false
+        },
+        {
+          "name": "Art_hud-mail",
+          "active": false
+        },
+        {
+          "name": "Utility_邮件",
+          "active": false
+        },
+        {
+          "name": "Art_hud-nav-background",
+          "active": false
+        },
+        {
+          "name": "Art_hud-nav-city",
+          "active": false
+        },
+        {
+          "name": "Art_hud-nav-hero",
+          "active": false
+        },
+        {
+          "name": "Art_hud-nav-formation",
+          "active": false
+        },
+        {
+          "name": "Art_hud-nav-bag",
+          "active": false
+        },
+        {
+          "name": "Art_hud-nav-alliance",
+          "active": false
+        },
+        {
+          "name": "Nav_主城",
+          "active": false
+        },
+        {
+          "name": "Nav_武将",
+          "active": false
+        },
+        {
+          "name": "Nav_布阵",
+          "active": false
+        },
+        {
+          "name": "Nav_背包",
+          "active": false
+        },
+        {
+          "name": "Nav_联盟",
+          "active": false
+        },
+        {
+          "name": "Art_hud-campaign",
+          "active": false
+        },
+        {
+          "name": "Campaign",
+          "active": false
+        }
+      ],
+      "resourceLabels": [
+        false,
+        false,
+        false
+      ],
+      "characters": [
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true,
+        true
+      ],
+      "palace": {
+        "name": "Art_palace",
+        "x": -114.5,
+        "y": 256.5,
+        "angle": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "gold": {
+        "name": "Art_hud-gold",
+        "x": -536,
+        "y": 432,
+        "angle": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "plus": {
+        "name": "ResourcePlus_gold",
+        "x": -444,
+        "y": 432.5,
+        "angle": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "label": {
+        "name": "Text_128,600",
+        "x": -533,
+        "y": 432.5,
+        "angle": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      }
+    },
+    "errors": []
+  },
+  "navSplit": {
+    "mode": "restored-baseline",
+    "date": "2026-10-31T23:50:34.988Z",
+    "assertions": [
+      "palace.x",
+      "palace.y",
+      "palace.angle",
+      "gold.x",
+      "gold.y",
+      "gold.angle",
+      "plus.x",
+      "plus.y",
+      "plus.angle",
+      "label.x",
+      "label.y",
+      "label.angle"
+    ],
+    "state": {
+      "nav": [
+        {
+          "name": "Art_hud-nav-background",
+          "x": -386,
+          "y": -382.5,
+          "angle": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "name": "Art_hud-nav-city",
+          "x": -733.5,
+          "y": -373,
+          "angle": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "name": "Art_hud-nav-hero",
+          "x": -551,
+          "y": -373,
+          "angle": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "name": "Art_hud-nav-formation",
+          "x": -396,
+          "y": -373,
+          "angle": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "name": "Art_hud-nav-bag",
+          "x": -243.5,
+          "y": -373,
+          "angle": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        },
+        {
+          "name": "Art_hud-nav-alliance",
+          "x": -88.5,
+          "y": -373,
+          "angle": 0,
+          "scaleX": 1,
+          "scaleY": 1
+        }
+      ],
+      "palace": {
+        "name": "Art_palace",
+        "x": -114.5,
+        "y": 256.5,
+        "angle": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "gold": {
+        "name": "Art_hud-gold",
+        "x": -536,
+        "y": 432,
+        "angle": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "plus": {
+        "name": "ResourcePlus_gold",
+        "x": -444,
+        "y": 432.5,
+        "angle": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      },
+      "label": {
+        "name": "Text_128,600",
+        "x": -533,
+        "y": 432.5,
+        "angle": 0,
+        "scaleX": 1,
+        "scaleY": 1
+      }
+    },
+    "errors": []
+  }
 }

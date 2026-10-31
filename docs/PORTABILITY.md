@@ -10,7 +10,7 @@
 
 ## Version 1 schema
 
-顶层字段：version=1、id、name、canvas、assets、nodes。canvas 为 width、height、background。assets 为 id、name、src、width、height；尺寸是原始图像像素尺寸，src 可为可读取 URL 或受支持的 raster base64 data URL。
+顶层字段：version=1、id、name、canvas、assets、layers、nodes。canvas 为 width、height、background。assets 为 id、name、src、width、height；尺寸是原始图像像素尺寸，src 可为可读取 URL 或受支持的 raster base64 data URL。
 
 每个 node 包含 id、name、type（image/text）、x/y、width/height、rotation、scaleX/scaleY、z、visible、locked、opacity、anchorX/anchorY、parentId。image 节点引用 assetId；text 节点包含 text。ID 唯一，图片引用必须存在，父节点必须存在且不能形成环。未知字段会在校验时丢弃。
 
@@ -34,3 +34,13 @@
 本机服务限制 Host/Origin，不接收任意文件目标路径；这些 API 是开发机适配接口，不是用于公网部署的账户/权限服务。浏览器“保存到浏览器”和 API 写回是两条不同流程。
 
 为另一个游戏或引擎接入时，单独实现文档导出和受限写回适配器，映射稳定节点 ID、坐标、锚点、排序、可见性及图片引用。不要把浏览器 DOM 状态当作引擎场景序列化。对于 Cocos，Y 轴与旋转方向转换、运行时输入关联以及重编译流程见 cocos-adapter.md。
+
+## 图层扩展与兼容迁移
+
+layers 是非空有序容器数组，每项 id、name、z、visible、locked；node.layerId 必须引用已存在图层。图层 z 先决定排序，再按节点 z 排同父节点内元素。parentId 是局部变换父子关系，不等于图层归属；跨父节点的子元素仍受到父级堆叠上下文限制。图层显隐/锁定与节点及其祖先状态共同决定有效状态。
+
+删除图层删除该层元素及其后代；跨层后代也会随父级删除。移动元素到图层会一起迁移其子树。最后一个图层不能删除。活动图层属于编辑器会话状态，不是引擎业务场景状态。
+
+旧 version=1 文档若缺 layers，校验补默认层；识别到主城节点时补背景/建筑/角色/旗帜/界面五层。旧 Art_hud-bottom 合并底栏迁移依赖本机 /api/projects/city 获得最新六个素材定义，因此旧文档在独立静态部署前应先本机迁移、导出内嵌图片。
+
+本轮主城默认集合更新为38个元素。通用图层与任意图片继续可独立编辑；Cocos适配器仍只应用支持的既有根级元素，新图层不等于创建任意Cocos场景或Prefab。

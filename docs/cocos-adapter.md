@@ -15,3 +15,5 @@ This adapter exposes 24 main sprite instances and nine editable flag text nodes.
 For another engine implement a separate GET document exporter and explicit save adapter. The portable layout JSON and dist editor need no Cocos runtime dependencies. Asset manifests must provide image pixel sizes; export-city.mjs uses PNG IHDR dimensions and preserves runtime aspect-fit sizing.
 
 A valid saved city document is authoritative: omitted supported sprite IDs become inactive, together with their HUD companions. Missing/unreadable layout assets preserve the default scene. Runtime z order remains within existing World and HUD parents; the adapter does not move artwork across those layers.
+
+Bottom navigation is split into five original-reference icon/caption PNGs and one independent texture-sampled background. Each icon has its own linked Nav hit area. Legacy hud-bottom saves migrate to these six nodes while retaining other node transforms. Layer visibility applies to node and companions; ordering is layer z then node z within each Cocos parent. Locked remains an authoring restriction.
