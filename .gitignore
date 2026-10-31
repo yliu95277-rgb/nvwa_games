@@ -31,3 +31,5 @@ node_modules/
 /design/build-r*-*.log
 /design/build-final*.log
 /three-kingdoms-city/
+
+/ThreeKingdomsCity-web.zip
