@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {validateLayout,LayoutStore} from '../dist/layout-core.mjs';
+const base={version:1,id:'demo',name:'主城',canvas:{width:1672,height:941,background:'#123456'},assets:[{id:'a',name:'图',src:'assets/a.png',width:20,height:30}],nodes:[{id:'root',name:'建筑',type:'image',assetId:'a',x:10,y:20,width:20,height:30},{id:'child',name:'名称',type:'text',text:'城主府',parentId:'root'}]};
+const bad=fn=>{const d=structuredClone(base);fn(d);assert.throws(()=>validateLayout(d));};
+bad(d=>d.nodes[0].x=NaN);bad(d=>d.nodes[0].width=-1);bad(d=>d.nodes[0].scaleX=0);bad(d=>d.nodes.push({...d.nodes[0]}));bad(d=>d.assets.push({...d.assets[0]}));bad(d=>d.nodes[0].assetId='missing');bad(d=>d.nodes[0].parentId='child');bad(d=>d.nodes[0].parentId='missing');bad(d=>d.assets[0].src='javascript:alert(1)');bad(d=>d.assets[0].src='data:image/svg+xml,<svg onload="alert(1)">');
+const normalized=validateLayout(base);assert.equal(normalized.nodes[0].anchorX,.5);normalized.nodes[0].x=900;assert.equal(base.nodes[0].x,10);
+const store=new LayoutStore(base);let events=0;const unsubscribe=store.subscribe(()=>events++);store.select('root');store.updateNode('root',{x:100,rotation:45,scaleX:2});assert.equal(store.document.nodes[0].rotation,45);assert.equal(store.undo(),true);assert.equal(store.document.nodes[0].x,10);assert.equal(store.redo(),true);assert.equal(store.document.nodes[0].scaleX,2);
+store.beginTransaction();for(let i=0;i<20;i++)store.updateNode('root',{x:200+i});store.endTransaction();assert.equal(store.document.nodes[0].x,219);store.undo();assert.equal(store.document.nodes[0].x,100);store.redo();assert.equal(store.document.nodes[0].x,219);
+const copied=store.duplicateNode('root');assert.equal(store.document.nodes.length,4);assert.ok(store.document.nodes.some(n=>n.parentId===copied));store.deleteNode(copied);assert.equal(store.document.nodes.length,2);store.undo();assert.equal(store.document.nodes.length,4);
+const snapshot=store.document;snapshot.nodes[0].x=99999;assert.notEqual(store.document.nodes[0].x,99999);store.setDocument(JSON.parse(JSON.stringify(store.document)));assert.equal(store.canUndo,false);assert.equal(store.canRedo,false);assert.ok(events>10);unsubscribe();
+console.log('PASS validation, transforms, undo/redo, single-step gesture, subtree duplicate/delete, persistence clone');

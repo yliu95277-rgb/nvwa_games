@@ -1,0 +1,48 @@
+{
+  "mode": "deletion",
+  "date": "2026-10-31T16:27:51.802Z",
+  "assertions": [
+    "gold.inactive",
+    "plus.inactive",
+    "label.inactive"
+  ],
+  "state": {
+    "palace": {
+      "active": true,
+      "name": "Art_palace",
+      "x": -114.5,
+      "y": 256.5,
+      "angle": 0,
+      "scaleX": 1,
+      "scaleY": 1
+    },
+    "gold": {
+      "active": false,
+      "name": "Art_hud-gold",
+      "x": -536,
+      "y": 432,
+      "angle": 0,
+      "scaleX": 1,
+      "scaleY": 1
+    },
+    "plus": {
+      "active": false,
+      "name": "ResourcePlus_gold",
+      "x": -444,
+      "y": 432.5,
+      "angle": 0,
+      "scaleX": 1,
+      "scaleY": 1
+    },
+    "label": {
+      "active": false,
+      "name": "Text_128,600",
+      "x": -533,
+      "y": 432.5,
+      "angle": 0,
+      "scaleX": 1,
+      "scaleY": 1
+    }
+  },
+  "errors": []
+}

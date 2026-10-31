@@ -1,0 +1,12 @@
+{
+  "name": "game-layout-editor",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Portable local 2D game layout editor with an optional Cocos city adapter",
+  "scripts": {
+    "start": "node tools/serve.mjs",
+    "test": "node tools/test-layout.mjs"
+  },
+  "engines": { "node": ">=22" }
+}
