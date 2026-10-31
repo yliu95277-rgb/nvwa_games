@@ -1,0 +1,97 @@
+[
+  {
+    "id": "palace",
+    "source": "design/reference.png",
+    "rect": [
+      480,
+      58,
+      963,
+      370
+    ],
+    "center": [
+      721.5,
+      214.0
+    ],
+    "size": [
+      483,
+      312
+    ],
+    "method": "original screenshot polygon crop; sign/text retained; some ground and NPCs included"
+  },
+  {
+    "id": "tavern",
+    "source": "design/reference.png",
+    "rect": [
+      4,
+      165,
+      467,
+      454
+    ],
+    "center": [
+      235.5,
+      309.5
+    ],
+    "size": [
+      463,
+      289
+    ],
+    "method": "original screenshot polygon crop; sign/text retained; some ground and NPCs included"
+  },
+  {
+    "id": "barracks",
+    "source": "design/reference.png",
+    "rect": [
+      995,
+      268,
+      1429,
+      512
+    ],
+    "center": [
+      1212.0,
+      390.0
+    ],
+    "size": [
+      434,
+      244
+    ],
+    "method": "original screenshot polygon crop; sign/text retained; some ground and NPCs included"
+  },
+  {
+    "id": "market",
+    "source": "design/reference.png",
+    "rect": [
+      1,
+      470,
+      373,
+      694
+    ],
+    "center": [
+      187.0,
+      582.0
+    ],
+    "size": [
+      372,
+      224
+    ],
+    "method": "original screenshot polygon crop; sign/text retained; some ground and NPCs included"
+  },
+  {
+    "id": "forge",
+    "source": "design/reference.png",
+    "rect": [
+      391,
+      438,
+      775,
+      689
+    ],
+    "center": [
+      583.0,
+      563.5
+    ],
+    "size": [
+      384,
+      251
+    ],
+    "method": "original screenshot polygon crop; sign/text retained; some ground and NPCs included"
+  }
+]
