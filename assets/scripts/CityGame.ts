@@ -14,7 +14,7 @@ export class CityGame extends Component {
   const camNode=new Node('UICamera');this.node.addChild(camNode);camNode.setPosition(0,0,1000);const cam=camNode.addComponent(Camera);cam.projection=Camera.ProjectionType.ORTHO;cam.orthoHeight=H/2;cam.near=1;cam.far=2000;cam.visibility=Layers.Enum.UI_2D;cam.clearColor=new Color(28,31,24,255);cv.cameraComponent=cam;
   this.world=this.layer('World',this.root);this.hud=this.layer('HUD',this.root);this.overlay=this.layer('Overlay',this.root);
   this.text(this.hud,'正在绘制蜀汉主城…',W/2,H/2,30);
-  Promise.all(['city-ground','palace','tavern','barracks','market','forge','guanyu','avatar','nav-city','nav-hero','nav-formation','nav-bag','nav-alliance'].map(id=>this.load(id))).then(()=>{if(!this.isValid)return;this.hud.destroyAllChildren();this.city();this.buildHUD();}).catch(e=>this.text(this.hud,'资源加载失败：'+e,W/2,H/2+60,22));
+  Promise.all(['city-ground','palace','tavern','barracks','market','forge','guanyu','avatar','nav-city','nav-hero','nav-formation','nav-bag','nav-alliance','hud-bottom','hud-campaign','hud-activity','hud-task','hud-mail','hud-gold','hud-grain','hud-jade','hud-portrait'].map(id=>this.load(id))).then(()=>{if(!this.isValid)return;this.hud.destroyAllChildren();this.city();this.buildHUD();}).catch(e=>this.text(this.hud,'资源加载失败：'+e,W/2,H/2+60,22));
  }
  layer(name:string,parent:Node){const n=new Node(name);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(W,H);return n;}
  place(n:Node,x:number,y:number){n.setPosition(x-W/2,H/2-y);}
@@ -28,17 +28,16 @@ export class CityGame extends Component {
  for(const [id,x,y,w,h] of bs){const n=this.image(this.world,id,x,y,w,h);n.on(Node.EventType.TOUCH_END,()=>this.building(id),this);const tag=this.box(this.world,'BuildingTag_'+id,x,y+h*.39,135,40,'#3e2b1b','#deb967',9);this.text(tag,names[id],W/2,H/2,22,'#ffe7a2',130);tag.on(Node.EventType.TOUCH_END,()=>this.building(id),this);}
  const hero=this.image(this.world,'guanyu',390,470,92,135);hero.on(Node.EventType.TOUCH_END,()=>this.heroes(),this);tween(hero).by(1.8,{position:new Vec3(0,5,0)}).by(1.8,{position:new Vec3(0,-5,0)}).union().repeatForever().start();
  }
- buildHUD(){this.box(this.hud,'Portrait',83,65,124,112,'#33291e','#edc477',48);this.image(this.hud,'avatar',83,57,92,92);this.text(this.hud,'主公 · Lv.18',83,95,16);this.resourceLabels=[];
- const resourcesInfo=[['铜钱',this.game.resources.gold],['粮草',this.game.resources.grain],['玉璧',this.game.resources.jade]];
- resourcesInfo.forEach(([label,value],i)=>{const x=300+i*263;this.box(this.hud,'ResourceBar_'+label,x,42,245,52,'#fff0d0','#a77836',22);this.resourceLabels.push(this.text(this.hud,label+'  '+Number(value).toLocaleString(),x-10,42,24,'#533419',225));});
- ['活动','任务','邮件'].forEach((name,i)=>this.button(this.hud,name,1604,85+i*114,90,84,()=>this.utility(name)));
- this.box(this.hud,'BottomNavigation',W/2,889,W-20,94,'#2b241e','#c69a50',24);
- ['主城','武将','布阵','背包','联盟'].forEach((s,i)=>{const x=100+i*159;const btn=this.button(this.hud,s,x,906,139,42,()=>this.nav(s),i===0);const icon=this.image(this.hud,['nav-city','nav-hero','nav-formation','nav-bag','nav-alliance'][i],x,850,73,73);icon.on(Node.EventType.TOUCH_END,()=>this.nav(s),this);});
- this.button(this.hud,'出 征  ➜',1487,861,282,116,()=>this.startBattle(),true);
- this.text(this.hud,'蜀汉 · 桃园新城',1122,39,23,'#fff6d9',280);
- this.text(this.hud,'点击建筑经营城池 · 出征守卫蜀汉',1150,904,18,'#e5cca2',400);
+ hit(parent:Node,name:string,x:number,y:number,w:number,h:number,action:()=>void){const n=new Node(name);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(w,h);this.place(n,x,y);n.on(Node.EventType.TOUCH_END,action,this);return n;}
+ buildHUD(){
+ this.image(this.hud,'hud-portrait',167.5,65,301,130);this.resourceLabels=[];
+ ['gold','grain','jade'].forEach((k,i)=>{const x=[300,554.5,809.5][i];this.image(this.hud,'hud-'+k,x,38.5,[232,231,225][i],51);const l=this.text(this.hud,this.game.resources[k as 'gold'].toLocaleString(),x+3,38,26,'#312117',150);this.resourceLabels.push(l);this.hit(this.hud,'ResourcePlus_'+k,x+92,38,43,45,()=>this.utility('活动'));});
+ ['活动','任务','邮件'].forEach((name,i)=>{const y=[81.5,208,332.5][i];this.image(this.hud,['hud-activity','hud-task','hud-mail'][i],1609,y,118,[129,128,125][i]);this.hit(this.hud,'Utility_'+name,1609,y,118,125,()=>this.utility(name));});
+ this.box(this.hud,'FooterEdge',W/2,932,W,28,'#29231e','#745638',0);this.image(this.hud,'hud-bottom',450,853,900,176);
+ ['主城','武将','布阵','背包','联盟'].forEach((name,i)=>{const x=[110,285,435,590,745][i];this.hit(this.hud,'Nav_'+name,x,850,145,160,()=>this.nav(name));});
+ this.image(this.hud,'hud-campaign',1538.5,795.5,267,291);this.hit(this.hud,'Campaign',1538.5,817,240,230,()=>this.startBattle());
  }
- persist(){sys.localStorage.setItem('three-kingdoms-city-v1',this.game.serialize());['gold','grain','jade'].forEach((k,i)=>{if(this.resourceLabels[i])this.resourceLabels[i].string=['铜钱','粮草','玉璧'][i]+'  '+this.game.resources[k as 'gold'].toLocaleString();});}
+ persist(){sys.localStorage.setItem('three-kingdoms-city-v1',this.game.serialize());['gold','grain','jade'].forEach((k,i)=>{if(this.resourceLabels[i])this.resourceLabels[i].string=this.game.resources[k as 'gold'].toLocaleString();});}
  toast(message:string){if(this.toastNode?.isValid)this.toastNode.destroy();const n=this.box(this.overlay,'Toast',W/2,140,640,58,'#2d241e','#dfbe79',20);this.text(n,message,W/2,H/2,23);this.toastNode=n;this.scheduleOnce(()=>{if(n.isValid)n.destroy()},2.8);}
  modal(title:string){this.overlay.destroyAllChildren();const shade=this.box(this.overlay,'ModalBackdrop',W/2,H/2,W,H,'#171a1bdc','#171a1b',0);shade.on(Node.EventType.TOUCH_END,()=>{},this);const panel=this.box(this.overlay,'ModalPanel',W/2,H/2,830,580,'#f4e5bf','#ad7b35',24);this.text(this.overlay,title,W/2,245,36,'#61351e');this.button(this.overlay,'关闭 ×',1160,230,120,52,()=>this.overlay.destroyAllChildren());return this.overlay;}
  building(id:BuildingId){const p=this.modal(names[id]+'  Lv.'+this.game.levels[id]);this.image(p,id,W/2-190,H/2,290,235);const c=this.game.upgradeCost(id);this.text(p,'城池发展 · '+names[id],W/2+160,370,25,'#6b4429',340);this.text(p,'升级消耗：铜钱 '+c.gold+' / 粮草 '+c.grain,W/2+150,430,19,'#6b4429',380);this.button(p,'升级建筑',W/2+155,510,255,66,()=>{const r=this.game.upgrade(id);this.persist();this.building(id);this.toast(r.message)},true);if(id==='tavern')this.button(p,'招募武将 · 100 玉璧',W/2,665,360,62,()=>{const r=this.game.recruit();this.persist();this.toast(r.message)},true);else this.text(p,'经营城池，积蓄军资；点击出征开始塔防战斗。',W/2,655,21,'#7c5833',680);}
