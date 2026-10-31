@@ -1,0 +1,18 @@
+{
+  "name": "ThreeKingdomsCity",
+  "platform": "web-desktop",
+  "buildPath": "project://build",
+  "outputName": "web-desktop",
+  "startScene": "06032dd2-4173-4bd1-bf26-9b6421c69fa1",
+  "scenes": [
+    {
+      "url": "db://assets/scenes/Main.scene",
+      "uuid": "06032dd2-4173-4bd1-bf26-9b6421c69fa1"
+    }
+  ],
+  "debug": true,
+  "sourceMaps": true,
+  "md5Cache": false,
+  "mainBundleCompressionType": "merge_dep",
+  "showStats": false
+}

@@ -1,0 +1,11 @@
+{
+  "name": "three-kingdoms-city",
+  "uuid": "14a655ff-9a9e-43f8-8708-2563d5b4fd06",
+  "creator": {
+    "version": "3.8.8"
+  },
+  "scripts": {
+    "build:cocos": "powershell -ExecutionPolicy Bypass -File tools/build.ps1",
+    "serve": "node tools/serve.mjs"
+  }
+}

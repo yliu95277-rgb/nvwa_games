@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..','build','web-desktop');
+const p=path.join(root,'index.html');
+let html=fs.readFileSync(p,'utf8');
+html=html.replace(/<h1 class="header">[\s\S]*?<\/h1>/,'').replace(/<p class="footer">[\s\S]*?<\/p>/,'');
+html=html.replace('cc_exact_fit_screen="false"','cc_exact_fit_screen="true"').replace(/style="width: \d+px; height: \d+px;"/,'style="width: 100vw; height: 100vh;"').replace('width="1280" height="960"','width="1672" height="941"').replace('content="portrait"','content="landscape"').replace('<title>Cocos Creator | ThreeKingdomsCity</title>','<title>蜀汉主城 · 三国塔防</title>');
+fs.writeFileSync(p,html);
+const style=path.join(root,'style.css');const css=fs.readFileSync(style,'utf8');const marker='/* City full viewport */';if(!css.includes(marker))fs.appendFileSync(style,'\n'+marker+'\nhtml,body{width:100%;height:100%;overflow:hidden;background:#1c1f18}#GameDiv{position:fixed;inset:0;margin:0;border:0;border-radius:0;box-shadow:none;width:100vw!important;height:100vh!important}#Cocos3dGameContainer,#GameCanvas{width:100%;height:100%;display:block}\n');
+console.log('Prepared full viewport web-desktop entry');

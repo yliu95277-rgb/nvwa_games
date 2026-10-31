@@ -1,0 +1,15 @@
+{
+  "editor": "C:/ProgramData/cocos/editors/Creator/3.8.8/CocosCreator.exe",
+  "version": "3.8.8",
+  "platform": "web-desktop",
+  "config": "build-config.json",
+  "finished": true,
+  "completedLocal": "2026-10-31 22:56:50 Asia/Shanghai",
+  "durationMs": 4000,
+  "indexSha256": "15a4c073870f1f3a5acb6b0e4d28e241dad50b34a1d73a7e9efc4d7fc238ff06",
+  "stdout": "design/build-reviewed-stdout.log",
+  "stderr": "design/build-reviewed-stderr.log",
+  "warnings": [],
+  "runtimeValidation": "Performed separately by primary agent; not asserted by this report",
+  "fullViewportPrepared": true
+}
