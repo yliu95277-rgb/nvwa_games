@@ -16,7 +16,7 @@ export class CityGame extends Component {
   const camNode=new Node('UICamera');this.node.addChild(camNode);camNode.setPosition(0,0,1000);const cam=camNode.addComponent(Camera);cam.projection=Camera.ProjectionType.ORTHO;cam.orthoHeight=H/2;cam.near=1;cam.far=2000;cam.visibility=Layers.Enum.UI_2D;cam.clearColor=new Color(28,31,24,255);cv.cameraComponent=cam;
   this.world=this.layer('World',this.root);this.hud=this.layer('HUD',this.root);this.overlay=this.layer('Overlay',this.root);
   this.text(this.hud,'正在绘制蜀汉主城…',W/2,H/2,30);
-  Promise.all(['city-ground','palace','tavern','barracks','market','forge','guanyu','avatar','nav-city','nav-hero','nav-formation','nav-bag','nav-alliance','hud-bottom','hud-campaign','hud-activity','hud-task','hud-mail','hud-gold','hud-grain','hud-jade','hud-portrait','guard-spear','guard-lookout','tower-front-rail'].map(id=>this.load(id))).then(()=>{if(!this.isValid)return;this.hud.destroyAllChildren();this.city();this.buildHUD();applyCityLayout(this.world,this.hud,this.resourceLabels);}).catch(e=>this.text(this.hud,'资源加载失败：'+e,W/2,H/2+60,22));
+  Promise.all(['city-ground','palace','tavern','barracks','market','forge','guanyu','avatar','nav-city','nav-hero','nav-formation','nav-bag','nav-alliance','hud-nav-background','hud-nav-city','hud-nav-hero','hud-nav-formation','hud-nav-bag','hud-nav-alliance','hud-campaign','hud-activity','hud-task','hud-mail','hud-gold','hud-grain','hud-jade','hud-portrait','guard-spear','guard-lookout','tower-front-rail'].map(id=>this.load(id))).then(()=>{if(!this.isValid)return;this.hud.destroyAllChildren();this.city();this.buildHUD();applyCityLayout(this.world,this.hud,this.resourceLabels);}).catch(e=>this.text(this.hud,'资源加载失败：'+e,W/2,H/2+60,22));
  }
  layer(name:string,parent:Node){const n=new Node(name);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(W,H);return n;}
  place(n:Node,x:number,y:number){n.setPosition(x-W/2,H/2-y);}
@@ -42,7 +42,7 @@ export class CityGame extends Component {
  this.image(this.hud,'hud-portrait',167.5,65,301,130);this.resourceLabels=[];
  ['gold','grain','jade'].forEach((k,i)=>{const x=[300,554.5,809.5][i];this.image(this.hud,'hud-'+k,x,38.5,[232,231,225][i],51);const l=this.text(this.hud,this.game.resources[k as 'gold'].toLocaleString(),x+3,38,26,'#312117',150);this.resourceLabels.push(l);this.hit(this.hud,'ResourcePlus_'+k,x+92,38,43,45,()=>this.utility('活动'));});
  ['活动','任务','邮件'].forEach((name,i)=>{const y=[81.5,208,332.5][i];this.image(this.hud,['hud-activity','hud-task','hud-mail'][i],1609,y,118,[129,128,125][i]);this.hit(this.hud,'Utility_'+name,1609,y,118,125,()=>this.utility(name));});
- this.box(this.hud,'FooterEdge',W/2,932,W,28,'#29231e','#745638',0);this.image(this.hud,'hud-bottom',450,853,900,176);
+ this.box(this.hud,'FooterEdge',W/2,932,W,28,'#29231e','#745638',0);this.image(this.hud,'hud-nav-background',450,853,900,176);const navBounds=[0,205,365,515,670,825];['city','hero','formation','bag','alliance'].forEach((id,i)=>this.image(this.hud,'hud-nav-'+id,(navBounds[i]+navBounds[i+1])/2,843.5,navBounds[i+1]-navBounds[i],157));
  ['主城','武将','布阵','背包','联盟'].forEach((name,i)=>{const x=[110,285,435,590,745][i];this.hit(this.hud,'Nav_'+name,x,850,145,160,()=>this.nav(name));});
  this.image(this.hud,'hud-campaign',1538.5,795.5,267,291);this.hit(this.hud,'Campaign',1538.5,817,240,230,()=>this.startBattle());
  }
