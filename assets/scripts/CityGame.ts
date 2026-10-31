@@ -15,7 +15,7 @@ export class CityGame extends Component {
   const camNode=new Node('UICamera');this.node.addChild(camNode);camNode.setPosition(0,0,1000);const cam=camNode.addComponent(Camera);cam.projection=Camera.ProjectionType.ORTHO;cam.orthoHeight=H/2;cam.near=1;cam.far=2000;cam.visibility=Layers.Enum.UI_2D;cam.clearColor=new Color(28,31,24,255);cv.cameraComponent=cam;
   this.world=this.layer('World',this.root);this.hud=this.layer('HUD',this.root);this.overlay=this.layer('Overlay',this.root);
   this.text(this.hud,'正在绘制蜀汉主城…',W/2,H/2,30);
-  Promise.all(['city-ground','palace','tavern','barracks','market','forge','guanyu','avatar','nav-city','nav-hero','nav-formation','nav-bag','nav-alliance','hud-bottom','hud-campaign','hud-activity','hud-task','hud-mail','hud-gold','hud-grain','hud-jade','hud-portrait','guard-spear','guard-lookout'].map(id=>this.load(id))).then(()=>{if(!this.isValid)return;this.hud.destroyAllChildren();this.city();this.buildHUD();}).catch(e=>this.text(this.hud,'资源加载失败：'+e,W/2,H/2+60,22));
+  Promise.all(['city-ground','palace','tavern','barracks','market','forge','guanyu','avatar','nav-city','nav-hero','nav-formation','nav-bag','nav-alliance','hud-bottom','hud-campaign','hud-activity','hud-task','hud-mail','hud-gold','hud-grain','hud-jade','hud-portrait','guard-spear','guard-lookout','tower-front-rail'].map(id=>this.load(id))).then(()=>{if(!this.isValid)return;this.hud.destroyAllChildren();this.city();this.buildHUD();}).catch(e=>this.text(this.hud,'资源加载失败：'+e,W/2,H/2+60,22));
  }
  layer(name:string,parent:Node){const n=new Node(name);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(W,H);return n;}
  place(n:Node,x:number,y:number){n.setPosition(x-W/2,H/2-y);}
@@ -26,19 +26,19 @@ export class CityGame extends Component {
  image(parent:Node,id:string,x:number,y:number,w:number,h:number){const n=new Node('Art_'+id);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(w,h);this.place(n,x,y);const s=n.addComponent(Sprite);s.spriteFrame=this.frames[id];s.sizeMode=Sprite.SizeMode.CUSTOM;const sz=this.frames[id].originalSize;const scale=Math.min(w/sz.width,h/sz.height);n.getComponent(UITransform)!.setContentSize(sz.width*scale,sz.height*scale);return n;}
  city(){this.image(this.world,'city-ground',W/2,H/2,W,H);
  const bs:[BuildingId,number,number,number,number][]=[['palace',736,235,420,325],['tavern',249,336,365,285],['barracks',1202,413,435,300],['market',214,601,340,235],['forge',619,588,365,275]];
- for(const [id,x,y,w,h] of bs){const n=this.image(this.world,id,x,y,w,h);n.on(Node.EventType.TOUCH_END,()=>this.building(id),this);const spec:Record<BuildingId,number[]>={palace:[4,24,117,35,3],tavern:[-5,-15,112,36,7],barracks:[-5,8,105,35,-7],market:[-5,-32,96,32,7],forge:[-7,-9,107,34,7]};const q=spec[id];this.plaque(n,id,q[0],q[1],q[2],q[3],q[4]);}
+ for(const [id,x,y,w,h] of bs){const n=this.image(this.world,id,x,y,w,h);n.on(Node.EventType.TOUCH_END,()=>this.building(id),this);const spec:Record<BuildingId,number[]>={palace:[42,35,111,22,8],tavern:[28,12,98,23,8],barracks:[-35,15,100,23,-13],market:[-5,-32,96,32,7],forge:[-7,-9,107,34,7]};const q=spec[id];this.plaque(n,id,q[0],q[1],q[2],q[3],q[4]);}
  this.cityDetails();
  const hero=this.image(this.world,'guanyu',390,470,92,135);hero.on(Node.EventType.TOUCH_END,()=>this.heroes(),this);tween(hero).by(1.8,{position:new Vec3(0,5,0)}).by(1.8,{position:new Vec3(0,-5,0)}).union().repeatForever().start();
  }
  plaque(parent:Node,id:BuildingId,dx:number,dy:number,w:number,h:number,angle:number){
- const n=new Node('AttachedPlaque_'+id);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.setPosition(dx,-dy);n.angle=angle;n.addComponent(UITransform).setContentSize(w,h);const g=n.addComponent(Graphics);g.fillColor=new Color(53,30,12);g.strokeColor=new Color(221,166,75);g.lineWidth=4;g.rect(-w/2,-h/2,w,h);g.fill();g.stroke();g.lineWidth=1;g.strokeColor=new Color(137,87,31);g.rect(-w/2+5,-h/2+5,w-10,h-10);g.stroke();g.fillColor=new Color(235,187,99);for(const x of [-w/2+3,w/2-3])for(const y of [-h/2+3,h/2-3]){g.circle(x,y,3);g.fill();}
- const l=this.text(n,names[id],W/2,H/2,h*.68,'#ffe2a0',w-10);l.fontFamily='KaiTi';l.isBold=true;n.on(Node.EventType.TOUCH_END,(e:any)=>{e.propagationStopped=true;this.building(id)},this);
+ const n=new Node('AttachedPlaque_'+id);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.setPosition(dx,-dy);n.angle=angle;n.addComponent(UITransform).setContentSize(w,h);const g=n.addComponent(Graphics);g.fillColor=new Color(53,30,12);g.strokeColor=new Color(221,166,75);g.lineWidth=2;g.rect(-w/2,-h/2,w,h);g.fill();g.stroke();g.lineWidth=1;g.strokeColor=new Color(137,87,31);g.rect(-w/2+5,-h/2+5,w-10,h-10);g.stroke();g.fillColor=new Color(235,187,99);for(const x of [-w/2+3,w/2-3])for(const y of [-h/2+3,h/2-3]){g.circle(x,y,3);g.fill();}
+ const l=this.text(n,names[id],W/2,H/2,h*.72,'#ffe2a0',w-10);l.fontFamily='KaiTi';l.isBold=true;n.on(Node.EventType.TOUCH_END,(e:any)=>{e.propagationStopped=true;this.building(id)},this);
  }
  cityDetails(){
  const guards:[number,number,number,number,string][]=[[881,576,40,61,'guard-spear'],[952,564,42,64,'guard-spear'],[1044,573,40,61,'guard-spear'],[990,763,43,65,'guard-spear'],[1040,805,43,65,'guard-spear'],[1095,850,44,66,'guard-spear'],[1478,430,59,84,'guard-lookout'],[1554,580,43,65,'guard-spear'],[660,351,37,58,'guard-spear'],[813,347,37,58,'guard-spear']];
  guards.forEach(([x,y,w,h,id])=>this.image(this.world,id,x,y,w,h));
  // Front rail is drawn after the lookout so the lower body sits inside the tower.
- const rail=this.box(this.world,'WatchtowerFrontRail',1478,468,103,15,'#79502e','#c08e4f',1);
+ this.image(this.world,'tower-front-rail',1480.5,478,113,30); // Exact foreground timber from the existing background.
  for(const [x,y,size,angle] of [[535,160,27,0],[839,145,26,0],[950,196,28,0],[565,210,25,4],[909,207,24,-4],[1361,405,23,-3],[1574,488,35,-5],[893,682,32,0],[1136,677,32,0]]){const l=this.text(this.world,'蜀',x,y,size,'#e9b85a',55);l.fontFamily='KaiTi';l.isBold=true;l.node.angle=angle;const outline=l.node.addComponent(LabelOutline);outline.color=new Color(169,44,26);outline.width=3;}
  }
  hit(parent:Node,name:string,x:number,y:number,w:number,h:number,action:()=>void){const n=new Node(name);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(w,h);this.place(n,x,y);n.on(Node.EventType.TOUCH_END,action,this);return n;}
