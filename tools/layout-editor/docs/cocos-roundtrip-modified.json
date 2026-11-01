@@ -1,0 +1,53 @@
+{
+  "mode": "modified",
+  "date": "2026-10-31T16:23:54.262Z",
+  "assertions": [
+    "palace.x",
+    "palace.y",
+    "palace.angle",
+    "gold.x",
+    "gold.y",
+    "gold.angle",
+    "plus.x",
+    "plus.y",
+    "plus.angle",
+    "label.x",
+    "label.y",
+    "label.angle"
+  ],
+  "state": {
+    "palace": {
+      "name": "Art_palace",
+      "x": -64.5,
+      "y": 236.5,
+      "angle": -5,
+      "scaleX": 1,
+      "scaleY": 1
+    },
+    "gold": {
+      "name": "Art_hud-gold",
+      "x": -496,
+      "y": 407,
+      "angle": -3,
+      "scaleX": 1,
+      "scaleY": 1
+    },
+    "plus": {
+      "name": "ResourcePlus_gold",
+      "x": -404.09991482445776,
+      "y": 402.6844067930265,
+      "angle": -3,
+      "scaleX": 1,
+      "scaleY": 1
+    },
+    "label": {
+      "name": "Text_128,600",
+      "x": -492.9779434176148,
+      "y": 407.3423068986485,
+      "angle": -3,
+      "scaleX": 1,
+      "scaleY": 1
+    }
+  },
+  "errors": []
+}
