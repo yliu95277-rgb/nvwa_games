@@ -1,0 +1,10 @@
+{
+  "version": "3.8.8",
+  "platform": "web-desktop",
+  "finished": true,
+  "revision": "HUD polish",
+  "stdout": "design/build-polish-stdout.log",
+  "stderr": "design/build-polish-stderr.log",
+  "indexSha256": "15a4c073870f1f3a5acb6b0e4d28e241dad50b34a1d73a7e9efc4d7fc238ff06",
+  "runtime": "runtime-test.json"
+}

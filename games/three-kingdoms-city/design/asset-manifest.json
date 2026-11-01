@@ -1,0 +1,112 @@
+{
+  "background": "city-ground.png",
+  "assets": [
+    {
+      "id": "palace",
+      "file": "palace.png",
+      "size": [
+        615,
+        481
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "source": "AI generated from design/reference.png",
+      "anchor": "center"
+    },
+    {
+      "id": "tavern",
+      "file": "tavern.png",
+      "size": [
+        485,
+        462
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "source": "AI generated from design/reference.png",
+      "anchor": "center"
+    },
+    {
+      "id": "barracks",
+      "file": "barracks.png",
+      "size": [
+        572,
+        460
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "source": "AI generated from design/reference.png",
+      "anchor": "center"
+    },
+    {
+      "id": "market",
+      "file": "market.png",
+      "size": [
+        600,
+        451
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "source": "AI generated from design/reference.png",
+      "anchor": "center"
+    },
+    {
+      "id": "forge",
+      "file": "forge.png",
+      "size": [
+        580,
+        437
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "source": "AI generated from design/reference.png",
+      "anchor": "center"
+    },
+    {
+      "id": "guanyu",
+      "file": "guanyu.png",
+      "size": [
+        343,
+        425
+      ],
+      "alpha": [
+        0,
+        255
+      ],
+      "source": "AI generated from design/reference.png",
+      "anchor": "center"
+    }
+  ],
+  "generation": "imagegen, 2026-10-31",
+  "note": "AI generated derivative sprites; not original source layers. PNG normalization via Pillow.",
+  "uiIcons": {
+    "source": "design/reference.png",
+    "method": "circular crop and alpha mask",
+    "files": [
+      "avatar",
+      "nav-city",
+      "nav-hero",
+      "nav-formation",
+      "nav-bag",
+      "nav-alliance"
+    ]
+  },
+  "layers": [
+    "city-ground single background plate",
+    "five isolated building PNGs",
+    "guanyu character PNG",
+    "reference icon crops",
+    "code-native UI text and controls",
+    "modal and battle layers"
+  ],
+  "layout": "sprites fit preserving aspect ratio into declared layout boxes; runtime center anchors"
+}

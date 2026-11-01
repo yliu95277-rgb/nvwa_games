@@ -1,0 +1,71 @@
+import {applyCityLayout} from './LayoutBridge';
+import { _decorator, Component, Node, Canvas, Camera, UITransform, view, ResolutionPolicy, Layers, Color, Graphics, Label, LabelOutline, Sprite, SpriteFrame, Texture2D, ImageAsset, resources, sys, UIOpacity, tween, Vec3, profiler, input, Input } from 'cc';
+import {GameState,BattleModel,BuildingId} from './GameState';
+const {ccclass}=_decorator;
+const W=1672,H=941;
+const names:Record<BuildingId,string>={palace:'城主府',tavern:'招贤馆',barracks:'兵营',forge:'铁匠铺',market:'集市'};
+@ccclass('CityGame')
+export class CityGame extends Component {
+ modalActions:{x:number;y:number;w:number;h:number;action:()=>void}[]=[];lastModalInput=0;
+ root!:Node; world!:Node; hud!:Node; overlay!:Node; toastNode?:Node; game!:GameState; frames:Record<string,SpriteFrame>={}; resourceLabels:Label[]=[];battle?:BattleModel;battleLayer?:Node; units?:Node;battleInfo?:Label;waveButton?:Label; ended=false;
+ onLoad(){
+  profiler.hideStats();
+  view.setDesignResolutionSize(W,H,ResolutionPolicy.SHOW_ALL);
+  this.game=new GameState(sys.localStorage.getItem('three-kingdoms-city-v1'));
+  this.root=new Node('GameCanvas');this.node.addChild(this.root);this.root.layer=Layers.Enum.UI_2D;this.root.addComponent(UITransform).setContentSize(W,H);const cv=this.root.addComponent(Canvas);
+  const camNode=new Node('UICamera');this.node.addChild(camNode);camNode.setPosition(0,0,1000);const cam=camNode.addComponent(Camera);cam.projection=Camera.ProjectionType.ORTHO;cam.orthoHeight=H/2;cam.near=1;cam.far=2000;cam.visibility=Layers.Enum.UI_2D;cam.clearColor=new Color(28,31,24,255);cv.cameraComponent=cam;
+  this.world=this.layer('World',this.root);this.hud=this.layer('HUD',this.root);this.overlay=this.layer('Overlay',this.root);
+  this.text(this.hud,'正在绘制蜀汉主城…',W/2,H/2,30);
+  Promise.all(['city-ground','palace','tavern','barracks','market','forge','guanyu','avatar','nav-city','nav-hero','nav-formation','nav-bag','nav-alliance','hud-nav-background','hud-nav-city','hud-nav-hero','hud-nav-formation','hud-nav-bag','hud-nav-alliance','hud-campaign','hud-activity','hud-task','hud-mail','hud-gold','hud-grain','hud-jade','hud-portrait','guard-spear','guard-lookout','tower-front-rail'].map(id=>this.load(id))).then(()=>{if(!this.isValid)return;this.hud.destroyAllChildren();this.city();this.buildHUD();applyCityLayout(this.world,this.hud,this.resourceLabels);}).catch(e=>this.text(this.hud,'资源加载失败：'+e,W/2,H/2+60,22));
+ }
+ layer(name:string,parent:Node){const n=new Node(name);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(W,H);return n;}
+ place(n:Node,x:number,y:number){n.setPosition(x-W/2,H/2-y);}
+ box(parent:Node,name:string,x:number,y:number,w:number,h:number,fill='#31251f',stroke='#b9904f',radius=14){const n=new Node(name);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(w,h);this.place(n,x,y);const g=n.addComponent(Graphics);g.fillColor=new Color().fromHEX(fill);g.strokeColor=new Color().fromHEX(stroke);g.lineWidth=2;g.roundRect(-w/2,-h/2,w,h,radius);g.fill();g.stroke();return n;}
+ text(parent:Node,value:string,x:number,y:number,size=24,color='#fff0c5',width=600){const n=new Node('Text_'+value.slice(0,12));n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(width,size*2.2);this.place(n,x,y);const l=n.addComponent(Label);l.string=value;l.fontSize=size;l.lineHeight=size*1.3;l.color=new Color().fromHEX(color);l.horizontalAlign=Label.HorizontalAlign.CENTER;l.verticalAlign=Label.VerticalAlign.CENTER;return l;}
+ button(parent:Node,label:string,x:number,y:number,w:number,h:number,action:()=>void,primary=false){const n=this.box(parent,'Button_'+label,x,y,w,h,primary?'#9b3024':'#342820',primary?'#ffe5a4':'#c79c55',h/3);this.text(n,label,W/2,H/2,Math.min(27,h*.36),'#fff1c8',w-8);if(parent===this.overlay)this.modalActions.push({x,y,w,h,action});else n.on(Node.EventType.TOUCH_END,action,this);n.on(Node.EventType.MOUSE_ENTER,()=>{n.setScale(1.035,1.035,1)},this);n.on(Node.EventType.MOUSE_LEAVE,()=>n.setScale(1,1,1),this);return n;}
+ load(id:string){return new Promise<void>((resolve,reject)=>resources.load('art/'+id,ImageAsset,(e,img)=>{if(e){reject(e);return;}const tex=new Texture2D();tex.image=img;const f=new SpriteFrame();f.texture=tex;this.frames[id]=f;resolve();}));}
+ image(parent:Node,id:string,x:number,y:number,w:number,h:number){const n=new Node('Art_'+id);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(w,h);this.place(n,x,y);const s=n.addComponent(Sprite);s.spriteFrame=this.frames[id];s.sizeMode=Sprite.SizeMode.CUSTOM;const sz=this.frames[id].originalSize;const scale=Math.min(w/sz.width,h/sz.height);n.getComponent(UITransform)!.setContentSize(sz.width*scale,sz.height*scale);return n;}
+ city(){this.image(this.world,'city-ground',W/2,H/2,W,H);
+ const bs:[BuildingId,number,number,number,number][]=[["palace",721.5,214,483,312],["tavern",235.5,309.5,463,289],["barracks",1205.5,402,471,268],["market",187,582,372,224],["forge",583,563.5,384,251]];
+ for(const [id,x,y,w,h] of bs){const n=this.image(this.world,id,x,y,w,h);n.on(Node.EventType.TOUCH_END,()=>this.building(id),this);}
+ this.cityDetails();
+ }
+ cityDetails(){
+ const guards:[number,number,number,number,string][]=[[881,576,40,61,'guard-spear'],[952,564,42,64,'guard-spear'],[1044,573,40,61,'guard-spear'],[990,763,43,65,'guard-spear'],[1040,805,43,65,'guard-spear'],[1095,850,44,66,'guard-spear'],[1478,430,59,84,'guard-lookout'],[1554,580,43,65,'guard-spear']];
+ guards.forEach(([x,y,w,h,id],i)=>{this.image(this.world,id,x,y,w,h).name='Art_'+id+'_'+i;});
+ // Front rail is drawn after the lookout so the lower body sits inside the tower.
+ this.image(this.world,'tower-front-rail',1480.5,478,113,30); // Exact foreground timber from the existing background.
+ let flagIndex=0;for(const [x,y,size,angle] of [[535,160,27,0],[839,145,26,0],[950,196,28,0],[565,210,25,4],[909,207,24,-4],[1361,405,23,-3],[1574,488,35,-5],[893,682,32,0],[1136,677,32,0]]){const l=this.text(this.world,'蜀',x,y,size,'#e9b85a',55);l.node.name='Flag_'+flagIndex++;l.fontFamily='KaiTi';l.isBold=true;l.node.angle=angle;const outline=l.node.addComponent(LabelOutline);outline.color=new Color(169,44,26);outline.width=3;}
+ }
+ hit(parent:Node,name:string,x:number,y:number,w:number,h:number,action:()=>void){const n=new Node(name);n.layer=Layers.Enum.UI_2D;parent.addChild(n);n.addComponent(UITransform).setContentSize(w,h);this.place(n,x,y);n.on(Node.EventType.TOUCH_END,action,this);return n;}
+ buildHUD(){
+ this.image(this.hud,'hud-portrait',167.5,65,301,130);this.resourceLabels=[];
+ ['gold','grain','jade'].forEach((k,i)=>{const x=[300,554.5,809.5][i];this.image(this.hud,'hud-'+k,x,38.5,[232,231,225][i],51);const l=this.text(this.hud,this.game.resources[k as 'gold'].toLocaleString(),x+3,38,26,'#312117',150);this.resourceLabels.push(l);this.hit(this.hud,'ResourcePlus_'+k,x+92,38,43,45,()=>this.utility('活动'));});
+ ['活动','任务','邮件'].forEach((name,i)=>{const y=[81.5,208,332.5][i];this.image(this.hud,['hud-activity','hud-task','hud-mail'][i],1609,y,118,[129,128,125][i]);this.hit(this.hud,'Utility_'+name,1609,y,118,125,()=>this.utility(name));});
+ this.box(this.hud,'FooterEdge',W/2,932,W,28,'#29231e','#745638',0);this.image(this.hud,'hud-nav-background',450,853,900,176);const navBounds=[0,205,365,515,670,825];['city','hero','formation','bag','alliance'].forEach((id,i)=>this.image(this.hud,'hud-nav-'+id,(navBounds[i]+navBounds[i+1])/2,843.5,navBounds[i+1]-navBounds[i],157));
+ ['主城','武将','布阵','背包','联盟'].forEach((name,i)=>{const x=[110,285,435,590,745][i];this.hit(this.hud,'Nav_'+name,x,850,145,160,()=>this.nav(name));});
+ this.image(this.hud,'hud-campaign',1538.5,795.5,267,291);this.hit(this.hud,'Campaign',1538.5,817,240,230,()=>this.startBattle());
+ }
+ persist(){sys.localStorage.setItem('three-kingdoms-city-v1',this.game.serialize());['gold','grain','jade'].forEach((k,i)=>{if(this.resourceLabels[i])this.resourceLabels[i].string=this.game.resources[k as 'gold'].toLocaleString();});}
+ toast(message:string){if(this.toastNode?.isValid)this.toastNode.destroy();const n=this.box(this.overlay,'Toast',W/2,140,640,58,'#2d241e','#dfbe79',20);this.text(n,message,W/2,H/2,23);this.toastNode=n;this.scheduleOnce(()=>{if(n.isValid)n.destroy()},2.8);}
+ clearModal(){this.overlay.off(Node.EventType.TOUCH_END,this.routeModal,this,true);this.modalActions=[];this.overlay.destroyAllChildren();}
+ routeModal(e:any){if(!this.modalActions.length||Date.now()-this.lastModalInput<160)return;const p=e.getUILocation();const a=[...this.modalActions].reverse().find(a=>Math.abs(p.x-a.x)<a.w/2&&Math.abs((H-p.y)-a.y)<a.h/2);if(a){this.lastModalInput=Date.now();a.action();}}
+ onDestroy(){input.off(Input.EventType.MOUSE_UP,this.routeModal,this);input.off(Input.EventType.TOUCH_END,this.routeModal,this);}
+ modal(title:string){this.clearModal();this.overlay.on(Node.EventType.TOUCH_END,this.routeModal,this,true);const shade=this.box(this.overlay,'ModalBackdrop',W/2,H/2,W,H,'#171a1bdc','#171a1b',0);shade.on(Node.EventType.TOUCH_END,()=>{},this);const panel=this.box(this.overlay,'ModalPanel',W/2,H/2,830,580,'#f4e5bf','#ad7b35',24);this.text(this.overlay,title,W/2,245,36,'#61351e');this.button(this.overlay,'关闭 ×',1160,230,120,52,()=>this.overlay.destroyAllChildren());return this.overlay;}
+ building(id:BuildingId){const p=this.modal(names[id]+'  Lv.'+this.game.levels[id]);this.image(p,id,W/2-190,H/2,290,235);const c=this.game.upgradeCost(id);this.text(p,'城池发展 · '+names[id],W/2+160,370,25,'#6b4429',340);this.text(p,'升级消耗：铜钱 '+c.gold+' / 粮草 '+c.grain,W/2+150,430,19,'#6b4429',380);this.button(p,'升级建筑',W/2+155,510,255,66,()=>{const r=this.game.upgrade(id);this.persist();this.building(id);this.toast(r.message)},true);if(id==='tavern')this.button(p,'招募武将 · 100 玉璧',W/2,665,360,62,()=>{const r=this.game.recruit();this.persist();this.toast(r.message)},true);else this.text(p,'经营城池，积蓄军资；点击出征开始塔防战斗。',W/2,655,21,'#7c5833',680);}
+ heroes(){const p=this.modal('武将 · 桃园聚义');this.image(p,'guanyu',W/2-230,H/2+30,140,220);this.text(p,this.game.heroes.join('  ·  '),W/2+100,410,26,'#64391f',480);this.text(p,'已集结 '+this.game.heroes.length+' 位武将',W/2+100,470,22,'#7c5833',400);this.button(p,'招贤 · 100 玉璧',W/2+100,570,300,70,()=>{const r=this.game.recruit();this.persist();this.heroes();this.toast(r.message)},true);}
+ utility(s:string){const p=this.modal(s==='活动'?'开城庆典':s==='邮件'?'驿站来信':'主城任务');const msg=s==='活动'?'开城贺礼：铜钱 2,000 · 粮草 1,000':s==='邮件'?'军师赠礼：玉璧 200':'主线：守卫桃园，完成三波防守\n累计胜利 '+this.game.victories+' 次';this.text(p,msg,W/2,440,28,'#603e24',680);if(s!=='任务')this.button(p,'领取奖励',W/2,570,280,74,()=>{const r=s==='活动'?this.game.claimDaily():this.game.claimMail();this.persist();this.toast(r.message)},true);else this.button(p,'前往出征',W/2,570,280,74,()=>{this.overlay.destroyAllChildren();this.startBattle()},true);}
+ nav(s:string){if(s==='主城'){this.overlay.destroyAllChildren();return;}if(s==='武将'){this.heroes();return;}if(s==='布阵'){const p=this.modal('布阵 · 城防演练');this.text(p,'进入战场后点击六处塔位建造箭塔。\n合理覆盖道路，击退三波敌军即可获胜。',W/2,430,26,'#603e24',700);this.button(p,'开始演练',W/2,575,280,74,()=>{this.overlay.destroyAllChildren();this.startBattle()},true);return;}const p=this.modal(s);this.text(p,s==='背包'?'军资账簿\n铜钱 '+this.game.resources.gold+' · 粮草 '+this.game.resources.grain+'\n玉璧 '+this.game.resources.jade:'蜀汉同盟 · 本地单人演练\n与关羽守卫桃园，完成主城任务。',W/2,460,28,'#603e24',680);}
+ startBattle(){if(this.battleLayer?.isValid)this.battleLayer.destroy();this.overlay.destroyAllChildren();this.battle=new BattleModel();this.ended=false;const b=this.box(this.root,'BattleScreen',W/2,H/2,W,H,'#243d31','#c49b56',0);this.battleLayer=b;this.overlay.setSiblingIndex(this.root.children.length-1);this.text(b,'桃园守卫战',W/2,55,38);this.text(b,'点击空塔位建造箭塔（60 军资） · 三波来敌，守住城门',W/2,103,22);this.button(b,'返回主城',1500,55,210,65,()=>{this.battle=undefined;b.destroy()});this.battleInfo=this.text(b,'',W/2,155,24);const field=this.layer('Battlefield',b);const g=field.addComponent(Graphics);g.lineWidth=52;g.strokeColor=new Color(176,145,92);this.battle.path.forEach((p,i)=>{const x=160+p.x*1350-W/2,y=H/2-(240+p.y*510);if(i===0)g.moveTo(x,y);else g.lineTo(x,y)});g.stroke();this.battle.slots.forEach((p,i)=>this.button(b,'＋ 箭塔',160+p.x*1350,240+p.y*510,112,72,()=>{const r=this.battle!.buildTower(i);this.toast(r.message);},false));this.units=this.layer('BattleUnits',b);const btn=this.button(b,'迎战下一波',W/2,858,310,80,()=>{if(this.battle?.status==='won'||this.battle?.status==='lost'){this.startBattle();return;}const r=this.battle!.startWave();this.toast(r.message)},true);this.waveButton=btn.children.find(n=>!!n.getComponent(Label))!.getComponent(Label)!;this.drawBattle();}
+ drawBattle(){const m=this.battle;if(!m||!this.units?.isValid)return;
+ const g=this.units.getComponent(Graphics)||this.units.addComponent(Graphics);g.clear();
+ this.battleInfo!.string='军资 '+m.gold+'    城门耐久 '+m.lives+'    波次 '+m.wave+' / 3';
+ const rect=(x:number,y:number,w:number,h:number,fill:Color,stroke:Color)=>{g.fillColor=fill;g.strokeColor=stroke;g.lineWidth=2;g.roundRect(x-W/2-w/2,H/2-y-h/2,w,h,Math.min(8,h/2));g.fill();g.stroke();};
+ for(const t of m.towers){const x=160+t.x*1350,y=240+t.y*510;rect(x,y,76,88,new Color(101,81,58),new Color(241,211,147));rect(x,y-30,88,20,new Color(160,118,63),new Color(241,211,147));}
+ for(const e of m.enemies){const x=160+e.x*1350,y=240+e.y*510;rect(x,y,35,40,new Color(154,61,43),new Color(229,187,105));rect(x,y-29,40,5,new Color(70,44,34),new Color(70,44,34));rect(x-20+20*e.hp/e.maxHp,y-29,Math.max(.1,40*e.hp/e.maxHp),5,new Color(157,221,131),new Color(157,221,131));}
+ g.lineWidth=3;g.strokeColor=new Color(255,220,110);for(const p of m.projectiles){g.moveTo(160+p.from.x*1350-W/2,H/2-(240+p.from.y*510));g.lineTo(160+p.to.x*1350-W/2,H/2-(240+p.to.y*510));g.stroke();}
+ if(m.status==='won'||m.status==='lost'){this.waveButton!.string='再战一局';if(!this.ended){this.ended=true;if(m.status==='won'){const r=this.game.collectBattle(m);this.persist();this.toast(r.message)}else this.toast('城门失守，尝试把箭塔放在道路转角。');this.text(this.units,m.status==='won'?'守城大捷 · 战利品已入库':'城门失守 · 再接再厉',W/2,755,34);}}else this.waveButton!.string=m.status==='running'?'交战中…':'迎战第 '+(m.wave+1)+' 波';
+ }
+
+ update(dt:number){if(this.battle){this.battle.tick(dt);this.drawBattle();}}
+}

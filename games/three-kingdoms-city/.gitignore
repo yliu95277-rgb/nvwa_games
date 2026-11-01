@@ -1,0 +1,35 @@
+
+#///////////////////////////
+# Cocos Creator Project
+#///////////////////////////
+
+/library/
+/temp/
+/local/
+/build/
+/profiles/
+/native/engine/android/**/*/assets
+
+#//////////////////////////
+# NPM
+#//////////////////////////
+node_modules/
+
+#//////////////////////////
+# VSCode
+#//////////////////////////
+.vscode/
+
+#//////////////////////////
+# WebStorm
+#//////////////////////////
+.idea/
+
+/design/build.log
+/design/build-stdout.log
+/design/build-stderr.log
+/design/build-r*-*.log
+/design/build-final*.log
+/three-kingdoms-city/
+
+/ThreeKingdomsCity-web.zip
