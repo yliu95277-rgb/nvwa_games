@@ -44,3 +44,13 @@ layers 是非空有序容器数组，每项 id、name、z、visible、locked；n
 旧 version=1 文档若缺 layers，校验补默认层；识别到主城节点时补背景/建筑/角色/旗帜/界面五层。旧 Art_hud-bottom 合并底栏迁移依赖本机 /api/projects/city 获得最新六个素材定义，因此旧文档在独立静态部署前应先本机迁移、导出内嵌图片。
 
 本轮主城默认集合更新为38个元素。通用图层与任意图片继续可独立编辑；Cocos适配器仍只应用支持的既有根级元素，新图层不等于创建任意Cocos场景或Prefab。
+
+## 工作区容器（与单布局分离）
+
+工作区 JSON 顶层 kind=layout-workspace、version=1、activeId、screens。每项 screen 包含 id、document（完整版本1布局）、reference（null或{name,src}）。screen.id用于工作区切换；document.id是布局业务标识，两者不可混淆。每界面保留独立文档与参考图。
+
+IndexedDB 的 documents 对象仓库以 workspace 键保存完整界面集，同时以 current 键保存当前布局兼容旧版读取。启动优先恢复workspace；旧localStorage布局仅作回退。切换保留各界面内存状态，但重置当前撤销/重做历史；未显式保存的修改不保证刷新后存在，没有自动保存。
+
+当前布局导出仅打包该文档assets；界面集导出遍历全部screens并打包assets和reference为data URL，迁移多界面时应选后者。导入根据kind检测工作区，旧单布局继续可用。参考图由PNG/JPG/WebP/GIF上传，15MB以内，每界面一张可替换；参考图透明度与叠加开关是视图控制，不是游戏节点。
+
+缩略图条用于切换与识别界面，不是引擎级场景导出器；Cocos适配仍只处理当前已支持主城根级Sprite集合。其他界面须先实现各自引擎适配才能写回游戏。
