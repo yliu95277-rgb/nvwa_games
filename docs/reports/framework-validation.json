@@ -1,0 +1,76 @@
+{
+  "passed": true,
+  "validatedAt": "2026-11-01T02:41:19.070Z",
+  "workspace": "D:/win_work/AI/github/awesome-test",
+  "commands": {
+    "build": "node scripts/game-command.mjs build",
+    "serve": "node scripts/game-command.mjs serve",
+    "tests": "node scripts/test.mjs"
+  },
+  "game": {
+    "path": "games/three-kingdoms-city",
+    "buildFinished": "2026-11-1 10:39:50 - debug: ================================ build Task (web-desktop) Finished in (4 s)ms ================================",
+    "stderr": "",
+    "interactions": {
+      "passed": true,
+      "viewport": [
+        1672,
+        941
+      ],
+      "checks": [
+        "runtime no console errors",
+        "click building upgrade",
+        "click recruit",
+        "refresh persistence",
+        "click build towers and start wave",
+        "3 wave victory accelerated simulation",
+        "reward persisted"
+      ],
+      "state": {
+        "status": "won",
+        "lives": 10,
+        "save": {
+          "version": 1,
+          "resources": {
+            "gold": 130600,
+            "grain": 37600,
+            "jade": 1180
+          },
+          "levels": {
+            "palace": 2,
+            "tavern": 1,
+            "barracks": 1,
+            "forge": 1,
+            "market": 1
+          },
+          "heroes": [
+            "关羽",
+            "张飞"
+          ],
+          "dailyClaimed": false,
+          "mailClaimed": false,
+          "victories": 1
+        }
+      }
+    }
+  },
+  "editor": {
+    "path": "tools/layout-editor",
+    "nodes": 38,
+    "layers": 5,
+    "browserChecks": [
+      "browser-test.cjs: full inspector, drag/resize/rotate, lock, visibility, duplicate/delete, embedded export/import, persistence, identity apply",
+      "browser-workspace.cjs: cross-layer drag, independent screens, references, save/reload",
+      "browser-grid.cjs:32px snap,Alt bypass,48px persistence,invalid reset",
+      "browser-alignment.cjs: rotated center,multi-selection,left,equal gaps,undo,lock skip"
+    ],
+    "consoleErrors": []
+  },
+  "endpoints": {
+    "http://127.0.0.1:8818": 200,
+    "http://127.0.0.1:8820": 200,
+    "http://127.0.0.1:8820/project-assets/art/palace.png": 200,
+    "http://127.0.0.1:8820/project-assets/reference.png": 200
+  },
+  "buildIndexSha256": "15a4c073870f1f3a5acb6b0e4d28e241dad50b34a1d73a7e9efc4d7fc238ff06"
+}

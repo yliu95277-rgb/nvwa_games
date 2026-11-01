@@ -1,0 +1,17 @@
+[
+  {
+    "path": "/project-assets/reference.png",
+    "status": 200
+  },
+  {
+    "path": "/project-assets/art/palace.png",
+    "status": 200
+  },
+  {
+    "nodes": 38,
+    "layers": 5,
+    "postStatus": 200,
+    "newGameExists": true,
+    "oldGameUntouched": true
+  }
+]

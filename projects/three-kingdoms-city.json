@@ -1,0 +1,22 @@
+{
+  "id": "three-kingdoms-city",
+  "name": "蜀汉主城",
+  "engine": "cocos-creator",
+  "gameRoot": "games/three-kingdoms-city",
+  "editorRoot": "tools/layout-editor",
+  "adapter": {
+    "id": "city",
+    "assets": "assets/resources/art",
+    "layout": "assets/resources/layouts/city-layout.json",
+    "reference": "design/reference.png",
+    "canvas": {
+      "width": 1672,
+      "height": 941
+    }
+  },
+  "commands": {
+    "build": "tools/build.ps1",
+    "serve": "tools/serve.mjs"
+  },
+  "previewPort": 8818
+}

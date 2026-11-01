@@ -1,0 +1,5 @@
+{
+  "custom": ["custom/cocos-creator-core", "custom/router"],
+  "vendor": [{"path":"vendor/awesome-gamedev-agent-skills","source":"https://github.com/gamedev-skills/awesome-gamedev-agent-skills"}],
+  "patches": ["custom/upstream-patches/gamedev-cocos.patch"]
+}

@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "url": "http://127.0.0.1:8831",
+  "build": "artifacts/standalone/three-kingdoms-city/build/web-desktop",
+  "checks": [
+    "fresh copied project compiled with Cocos Creator3.8.8",
+    "independent HTTP server",
+    "scene and artwork loaded",
+    "no page/console errors"
+  ],
+  "state": {
+    "scene": "Main",
+    "artCount": 30,
+    "resources": {
+      "gold": 128600,
+      "grain": 36800,
+      "jade": 1280
+    },
+    "hasCity": true,
+    "hasHUD": true
+  },
+  "interactionValidation": "Full real UI upgrade, recruit, persistence and tower-defense victory checks follow this runtime-load pass."
+}

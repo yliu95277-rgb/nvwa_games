@@ -1,0 +1,4 @@
+import fs from 'node:fs';import path from 'node:path';import crypto from 'node:crypto';import{fileURLToPath}from'node:url';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');const hash=f=>crypto.createHash('sha256').update(fs.readFileSync(f)).digest('hex');
+const mappings=[['packages/layout-core/src/layout-core.mjs','tools/layout-editor/dist/layout-core.mjs'],['packages/layout-core/src/alignment.mjs','tools/layout-editor/dist/alignment.mjs']];for(const [source,target]of mappings)fs.copyFileSync(path.join(root,source),path.join(root,target));
+fs.writeFileSync(path.join(root,'tools/layout-editor/framework-lock.json'),JSON.stringify({schema:1,package:'@local/layout-core',version:'1.0.0',distribution:'vendored standalone modules',files:mappings.map(([source,target])=>({source,target:path.basename(target),sha256:hash(path.join(root,source))}))},null,2)+'\n');console.log('Synced canonical layout-core to standalone editor distribution');

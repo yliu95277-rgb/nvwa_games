@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "adapter": "cocos-creator",
+  "version": "1.0.0",
+  "source": "packages/adapters/cocos-creator/runtime/LayoutBridge.ts",
+  "installed": "assets/scripts/LayoutBridge.ts",
+  "sha256": "c228cfa7e5ea7113618fe4b0f3492d7b9355bc47260bf4ece240da519740ac24",
+  "distribution": "vendored runtime; no repository-relative imports"
+}

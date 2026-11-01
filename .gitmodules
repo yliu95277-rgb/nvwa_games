@@ -1,0 +1,3 @@
+[submodule "skills/vendor/awesome-gamedev-agent-skills"]
+    path = skills/vendor/awesome-gamedev-agent-skills
+    url = https://github.com/gamedev-skills/awesome-gamedev-agent-skills.git

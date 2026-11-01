@@ -64,3 +64,9 @@ python -m http.server 8818 --directory build/web-desktop
 
 ## HUD 细节修订
 参考图 HUD 切片已替换初版简化按钮；资源数字为动态文字，部分静态标签和等级仍烘焙在切片中。点击热区独立。复盘见 design/LESSONS.md。
+
+## 工作区维护路径
+
+本工程在统一仓库中的维护入口为 `games/three-kingdoms-city`。根目录可执行 `npm run game:build`、`npm run game:serve`。本目录仍保留自己的工具与配置；单独复制后按本README从项目内构建，不需要根仓库编辑器服务。
+
+公共桥维护源位于根 `packages/adapters/cocos-creator`，此游戏使用项目内副本。更新必须显式同步并记录framework-lock，禁止运行时从根packages导入。根 `artifacts/legacy-repositories` 仅是旧Git仓库备份，不是当前源码入口。发布前完成独立复制构建与实际试玩。

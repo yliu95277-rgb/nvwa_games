@@ -1,0 +1,196 @@
+diff --git a/.claude-plugin/marketplace.json b/.claude-plugin/marketplace.json
+index 5b7b0b8..7467525 100644
+--- a/.claude-plugin/marketplace.json
++++ b/.claude-plugin/marketplace.json
+@@ -8,7 +8,7 @@
+     {
+       "name": "gamedev",
+       "source": "./",
+-      "description": "Everything: the master router plus all 77 game-dev skills across every engine, discipline, genre, and workflow.",
++      "description": "Everything: the master router plus all 78 game-dev skills across every engine, discipline, genre, and workflow.",
+       "strict": false,
+       "skills": [
+         "./router",
+@@ -53,6 +53,7 @@
+         "./skills/other-engines/pygame-core",
+         "./skills/other-engines/love2d-core",
+         "./skills/other-engines/defold-core",
++        "./skills/other-engines/cocos-creator-core",
+         "./skills/other-engines/roblox-luau",
+         "./skills/other-engines/roblox-datastores",
+         "./skills/other-engines/roblox-ui",
+@@ -187,6 +188,7 @@
+         "./skills/other-engines/pygame-core",
+         "./skills/other-engines/love2d-core",
+         "./skills/other-engines/defold-core",
++        "./skills/other-engines/cocos-creator-core",
+         "./skills/other-engines/roblox-luau",
+         "./skills/other-engines/roblox-datastores",
+         "./skills/other-engines/roblox-ui",
+diff --git a/README.md b/README.md
+index b546a65..47ae177 100644
+--- a/README.md
++++ b/README.md
+@@ -4,19 +4,19 @@
+ 
+ <p align="center">
+   <img src="docs/assets/awesome-gamedev-agent-skills-banner.png" width="820"
+-       alt="awesome-gamedev-agent-skills — game-dev skills for AI coding agents. 77 skills and a router across 12 engines, including an art-direction and asset-production workflow.">
++       alt="awesome-gamedev-agent-skills — game-dev skills for AI coding agents. 78 skills and a router across 13 engines, including an art-direction and asset-production workflow.">
+ </p>
+ 
+-**77 game-dev skills for your AI coding agent — install once, and a router loads the
++**78 game-dev skills for your AI coding agent — install once, and a router loads the
+ right skill for whatever you're building.**
+ 
+ [![License](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+-[![Skills](https://img.shields.io/badge/skills-77%20%2B%20router-brightgreen)](skills/)
++[![Skills](https://img.shields.io/badge/skills-78%20%2B%20router-brightgreen)](skills/)
+ [![Format](https://img.shields.io/badge/format-Agent%20Skills-informational)](docs/SKILL-FORMAT.md)
+ [![Last commit](https://img.shields.io/github/last-commit/gamedev-skills/awesome-gamedev-agent-skills)](https://github.com/gamedev-skills/awesome-gamedev-agent-skills/commits/main)
+ 
+ [Agent Skills](docs/SKILL-FORMAT.md) are small capability files an AI agent loads only when it
+-needs them. This repo gives your agent **77 game-dev skills** and a **router** that picks the
++needs them. This repo gives your agent **78 game-dev skills** and a **router** that picks the
+ right ones for you. You describe what you're building; the agent loads the matching engine and
+ task skills before it writes code.
+ 
+@@ -40,7 +40,7 @@ task skills before it writes code.
+ ## Quick start
+ 
+ **One command, any agent.** The [`skills`](https://www.npmjs.com/package/skills) CLI detects the
+-coding agent you already use and installs the router plus all 77 skills into the right place:
++coding agent you already use and installs the router plus all 78 skills into the right place:
+ 
+ ```bash
+ npx skills add gamedev-skills/awesome-gamedev-agent-skills
+@@ -120,7 +120,7 @@ engine), while disciplines, genres, and workflows are additive on top.
+ 
+ ## Catalog
+ 
+-77 skills across 9 categories — each links to its `SKILL.md` below.
++78 skills across 9 categories — each links to its `SKILL.md` below.
+ 
+ ### Engines
+ 
+@@ -186,7 +186,7 @@ engine), while disciplines, genres, and workflows are additive on top.
+ | [`threejs-gltf-loading`](skills/web-engines/threejs-gltf-loading/SKILL.md) | Loading glTF/GLB + skinned animation (`GLTFLoader`/`AnimationMixer`) |
+ | [`threejs-materials-lighting`](skills/web-engines/threejs-materials-lighting/SKILL.md) | Materials (PBR), lights, shadows, environment maps |
+ 
+-#### Other engines — 12 ([`skills/other-engines/`](skills/other-engines/)) · Bevy · pygame · LÖVE · Defold · Roblox
++#### Other engines — 13 ([`skills/other-engines/`](skills/other-engines/)) · Bevy · pygame · LÖVE · Defold · Roblox · Cocos Creator
+ 
+ | Skill | Scope |
+ |-------|-------|
+@@ -194,6 +194,7 @@ engine), while disciplines, genres, and workflows are additive on top.
+ | [`pygame-core`](skills/other-engines/pygame-core/SKILL.md) | pygame loop, `Surface`/`Rect`, sprites/groups, events (pygame-ce 2.5.8) |
+ | [`love2d-core`](skills/other-engines/love2d-core/SKILL.md) | LÖVE `load/update/draw` loop, dt-driven motion, input, states (LÖVE 11.5) |
+ | [`defold-core`](skills/other-engines/defold-core/SKILL.md) | Defold collections, game objects, script lifecycle, input, messages, factories, proxies, Bob build checks (Defold 1.14.0) |
++| [`cocos-creator-core`](skills/other-engines/cocos-creator-core/SKILL.md) | Creator 3.8 LTS components, scenes, UI, asset import/loading and preview/build |
+ | [`roblox-luau`](skills/other-engines/roblox-luau/SKILL.md) | Roblox Luau scripting: services, instances, client/server model |
+ | [`roblox-datastores`](skills/other-engines/roblox-datastores/SKILL.md) | Persistent data with `DataStoreService`: sessions, limits, ordered stores |
+ | [`roblox-ui`](skills/other-engines/roblox-ui/SKILL.md) | Roblox UI: `ScreenGui` layout, responsive scaling, safe areas, gamepad/touch navigation |
+@@ -323,7 +324,7 @@ func _physics_process(delta: float) -> void:
+ ## Repository layout
+ 
+ ```
+-skills/        77 specialized skills, grouped by engine / discipline / genre / workflow
++skills/        78 specialized skills, grouped by engine / discipline / genre / workflow
+ router/        the master router skill (+ references/)
+ docs/          authoring standard, installation, compatibility
+ templates/     SKILL.md template
+@@ -349,3 +350,5 @@ was created and is maintained by [Abhishek Barali](https://github.com/AbhishekBa
+ ## License
+ 
+ [Apache-2.0](LICENSE). See [`NOTICE`](NOTICE) for attribution and trademark notes.
++
++Cocos artwork routing: `cocos-creator-core` + `create-game-assets`.
+diff --git a/docs/VERSION-SUPPORT.md b/docs/VERSION-SUPPORT.md
+index baca1e1..42b93af 100644
+--- a/docs/VERSION-SUPPORT.md
++++ b/docs/VERSION-SUPPORT.md
+@@ -36,3 +36,7 @@ metadata unless the user explicitly asks for migration.
+ Review this table and search all skills for old baselines at least quarterly and whenever a covered
+ stack ships a stable/LTS release. A baseline update must include code review, routing/catalog
+ updates, primary-source links, and validator/tests—not a version-string-only change.
++
++## Cocos Creator
++
++Baseline: Creator 3.8 LTS documentation, checked 2026-10-31. Preserve creator.version and the selected editor. Creator 2.x/Cocos2d-x are outside the 3.x examples. [Official manual](https://docs.cocos.com/creator/3.8/manual/en/). No Creator runtime smoke test performed for this addition.
+diff --git a/router/SKILL.md b/router/SKILL.md
+index f19eacd..53a5556 100644
+--- a/router/SKILL.md
++++ b/router/SKILL.md
+@@ -2,7 +2,7 @@
+ name: router
+ description: >
+   Routes any game-development request to the right specialized skill(s): it detects the engine
+-  (Godot, Unity, Unreal, Ebitengine, Bevy, Phaser, PixiJS, three.js, Defold, LÖVE, pygame, Roblox) and the task, then
++  (Godot, Unity, Unreal, Ebitengine, Bevy, Phaser, PixiJS, three.js, Defold, LÖVE, pygame, Roblox, Cocos Creator) and the task, then
+   reads the chosen skill before acting. Use to make a game or to decide which skill applies — for
+   players, levels, enemies, shaders, art direction, sprites, tiles, textures, 3D assets, UI/UX,
+   cameras, game feel, physics, input, audio, saving, multiplayer, AI, dialogue, procedural
+@@ -63,6 +63,7 @@ Check the target's build and runtime entry point before treating a bundled libra
+ | 10 | LÖVE | `conf.lua` / `main.lua` calling `love.*` | `skills/other-engines/love2d-core/` |
+ | 11 | pygame | `*.py` with `import pygame` | `skills/other-engines/pygame-core/` |
+ | 12 | Roblox | `*.rbxl(x)` / `*.project.json` (Rojo) | `skills/other-engines/roblox-*` |
++| 13 | Cocos Creator | package.json creator.version plus assets/; confirm settings and cc imports | skills/other-engines/cocos-creator-core/ |
+ 
+ For secondary signals, the Godot-C#/Unity/Bevy, Defold/LÖVE/Lua and multi-web disambiguation
+ rules, monorepos, and plain-text engine mentions, read `references/engine-detection.md`.
+@@ -264,3 +265,12 @@ and offer to load it if the user confirms.
+ - Full engine fingerprints, secondary signals, and disambiguation: `references/engine-detection.md`.
+ - Exhaustive per-skill trigger words, engine bindings, and binding gaps: `references/routing-table.md`.
+ - Custom/proprietary or unsupported engine integration: `references/custom-engines.md`.
++
++## Cocos Creator routing
++
++For Creator 3.x load cocos-creator-core. Read creator.version in package.json and
++confirm the selected editor. Legacy project.json needs corroborating Creator files;
++plain TypeScript and Cocos2d-x do not select this 3.x skill. Bind genre engine slots
++to Creator APIs. Artwork requests select cocos-creator-core + create-game-assets,
++then the core skill's art-import reference. For example, “制作 Cocos 像素角色和 UI”
++selects those two skills. Preserve 2.x projects and consult matching documentation.
+diff --git a/router/references/engine-detection.md b/router/references/engine-detection.md
+index d132b4e..03c1382 100644
+--- a/router/references/engine-detection.md
++++ b/router/references/engine-detection.md
+@@ -21,6 +21,7 @@ Scan for the highest-confidence signal and stop at the first match in this prece
+ | 10 | LÖVE | `conf.lua`, or `main.lua` calling `love.*` | `*.love` | `skills/other-engines/love2d-core/` |
+ | 11 | pygame | `*.py` with `import pygame` | `pygame.init()`, `pygame.display.set_mode` | `skills/other-engines/pygame-core/` |
+ | 12 | Roblox | `*.rbxl` / `*.rbxlx`, or `*.project.json` (Rojo) | `*.luau`, `DataStoreService`, `game:GetService` | `skills/other-engines/roblox-*` (`roblox-luau` first, then the focused Roblox skill) |
++| 13 | Cocos Creator | package.json creator.version plus assets/; confirm settings and cc imports | Creator scenes, prefabs and .meta files | skills/other-engines/cocos-creator-core/ |
+ 
+ ## Detect the installed version
+ 
+@@ -87,3 +88,12 @@ Some non-project files raise confidence about the *task* (not the engine):
+ - `.itch.toml` / `butler` usage → `itch-publish`.
+ - `*.inputactions` → `unity-input-system`; `IA_`/`IMC_` assets → `unreal-enhanced-input`.
+ - `NavMesh.asset` / baked navmesh → `unity-navmesh`; `BT_`/`BB_` assets → `unreal-behavior-trees`.
++
++## Cocos Creator routing
++
++For Creator 3.x load cocos-creator-core. Read creator.version in package.json and
++confirm the selected editor. Legacy project.json needs corroborating Creator files;
++plain TypeScript and Cocos2d-x do not select this 3.x skill. Bind genre engine slots
++to Creator APIs. Artwork requests select cocos-creator-core + create-game-assets,
++then the core skill's art-import reference. For example, “制作 Cocos 像素角色和 UI”
++selects those two skills. Preserve 2.x projects and consult matching documentation.
+diff --git a/router/references/routing-table.md b/router/references/routing-table.md
+index d0de791..85c540a 100644
+--- a/router/references/routing-table.md
++++ b/router/references/routing-table.md
+@@ -163,3 +163,13 @@ the detected engine lacks, load the closest skill(s) and **state the gap** plain
+   to `defold-core`. There is no Defold GUI, sprite/tilemap or collision skill yet: use
+   `defold-core` (its build reference links the official manuals for those subsystems) plus
+   `game-ui-ux` / `level-design` / `physics-tuning`, and state the gap.
++
++## Cocos Creator
++
++| Skill | Pick it when |
++|-------|--------------|
++| `cocos-creator-core` | Cocos Creator 3.x, cc imports, components, scenes/prefabs, UITransform, SpriteFrame, resources.load, Asset Bundle, Creator preview/build |
++
++Bind genre UI, movement, data and asset slots to Creator through this core skill.
++For art use cocos-creator-core + create-game-assets and its art-import reference.
++Creator 2.x and Cocos2d-x are outside these 3.x examples.

@@ -1,0 +1,26 @@
+{
+  "passed": true,
+  "source": "games/three-kingdoms-city",
+  "copy": "artifacts/standalone/three-kingdoms-city",
+  "runtimeFilesChecked": 4,
+  "copied": [
+    "assets",
+    "settings",
+    "tools",
+    "package.json",
+    "tsconfig.json",
+    "build-config.json",
+    ".creator",
+    "framework-lock.json",
+    "README.md",
+    ".gitignore"
+  ],
+  "excluded": [
+    "library",
+    "temp",
+    "build",
+    ".git",
+    "design generated evidence"
+  ],
+  "notes": "Runtime imports remain game-local or Cocos cc engine. Canonical framework is vendored, never imported from repository root."
+}

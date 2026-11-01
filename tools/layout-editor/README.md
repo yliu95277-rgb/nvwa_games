@@ -10,7 +10,7 @@
 npm start
 ```
 
-打开 `http://127.0.0.1:8820`。服务只监听本机地址；请使用此精确地址，localhost 别名不在当前 Host 白名单。主城素材读取自同级 `../three-kingdoms-city`。本项目使用本地 Git 管理，未配置或发布在线托管。
+打开 `http://127.0.0.1:8820`。服务只监听本机地址；请使用此精确地址，localhost 别名不在当前 Host 白名单。主城素材通过根 `projects/three-kingdoms-city.json` 定位到 `games/three-kingdoms-city`。本项目使用本地 Git 管理，未配置或发布在线托管。
 
 ```sh
 npm test
@@ -29,7 +29,7 @@ npm test
 
 ## 应用到主城
 
-“应用到主城”通过本机服务写入固定的 `../three-kingdoms-city/assets/resources/layouts/city-layout.json`，并保存编辑器目录的 `city-project.json`。需要重新编译主城后才生效，**不是编辑器中实时控制 Cocos 节点**。
+“应用到主城”通过本机服务写入固定的 `../../games/three-kingdoms-city/assets/resources/layouts/city-layout.json`，并保存编辑器目录的 `city-project.json`。需要重新编译主城后才生效，**不是编辑器中实时控制 Cocos 节点**。
 
 该适配器只接受 1672×941、已支持的主城 Sprite ID、根级父节点。编辑器支持的任意新增图片/层级不等于主城桥全部支持。详细映射与限制见 [Cocos 适配说明](docs/cocos-adapter.md)。
 
@@ -74,3 +74,9 @@ npm test
 默认不开启隔离编辑：点击任意元素会切换其所在图层。按需勾选“隔离编辑当前层”才限制画布编辑范围。
 
 多界面是编辑器工作区能力；当前 Cocos 桥仍只支持“当前主城布局”的既有元素，不代表游戏已实现这些新界面或自动生成多场景。
+
+## 统一工作区中的位置
+
+当前维护入口为 `tools/layout-editor`。根目录 `npm run editor` 启动本机服务；服务通过 `projects/three-kingdoms-city.json` 定位当前主城，不再依赖旧的同级目录约定。单独静态部署仍只需dist；本机写回桥需要项目配置和游戏目录，不属于通用静态运行依赖。
+
+`packages/layout-core/src` 为公共核心维护源，通过根 `node scripts/sync-layout-core.mjs` 显式同步到dist并记录framework-lock；不要只改生成副本而遗漏维护源。根旧仓库备份只供追溯，不作为修改入口。独立编辑器通用JSON与Cocos业务适配继续分离。

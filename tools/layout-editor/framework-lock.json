@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "package": "@local/layout-core",
+  "version": "1.0.0",
+  "distribution": "vendored standalone modules",
+  "files": [
+    {
+      "source": "packages/layout-core/src/layout-core.mjs",
+      "target": "layout-core.mjs",
+      "sha256": "8a536984ea5b6d33941c626e5678fc20cf23a03a62f9b304aeb113da1aebba4e"
+    },
+    {
+      "source": "packages/layout-core/src/alignment.mjs",
+      "target": "alignment.mjs",
+      "sha256": "90c5ad11b1bb9600cc0b83058fb69acdf6119826b665ab1767becd8e804ec557"
+    }
+  ]
+}

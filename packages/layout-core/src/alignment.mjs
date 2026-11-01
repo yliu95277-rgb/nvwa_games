@@ -1,0 +1,16 @@
+import {validateLayout,effectiveNodeState} from './layout-core.mjs';
+const multiply=(a,b)=>[a[0]*b[0]+a[2]*b[1],a[1]*b[0]+a[3]*b[1],a[0]*b[2]+a[2]*b[3],a[1]*b[2]+a[3]*b[3],a[0]*b[4]+a[2]*b[5]+a[4],a[1]*b[4]+a[3]*b[5]+a[5]];
+const identity=[1,0,0,1,0,0];
+function local(n){const r=n.rotation*Math.PI/180,c=Math.cos(r),s=Math.sin(r),a=c*n.scaleX,b=s*n.scaleX,d=c*n.scaleY,e=-s*n.scaleY;return [a,b,e,d,n.x-a*n.anchorX*n.width-e*n.anchorY*n.height,n.y-b*n.anchorX*n.width-d*n.anchorY*n.height];}
+function world(n,map){return n.parentId?multiply(world(map.get(n.parentId),map),local(n)):local(n)}
+function bounds(n,map){const m=world(n,map),points=[[0,0],[n.width,0],[0,n.height],[n.width,n.height]].map(([x,y])=>[m[0]*x+m[2]*y+m[4],m[1]*x+m[3]*y+m[5]]),xs=points.map(p=>p[0]),ys=points.map(p=>p[1]);return {left:Math.min(...xs),right:Math.max(...xs),top:Math.min(...ys),bottom:Math.max(...ys)};}
+function translate(n,dx,dy,map){const p=n.parentId?world(map.get(n.parentId),map):identity,det=p[0]*p[3]-p[1]*p[2];if(Math.abs(det)<1e-12)throw Error('Singular parent transform');n.x+=(p[3]*dx-p[2]*dy)/det;n.y+=(-p[1]*dx+p[0]*dy)/det;}
+/** Align transformed screen bounds, preserving original rotations/scales and parent-local coordinates. */
+export function alignNodes(input,ids,mode,target='canvas'){
+ const doc=validateLayout(input);if(!['canvas','selection'].includes(target))throw Error('Unknown alignment target');if(!['left','hcenter','right','top','vcenter','bottom','center','distribute-h','distribute-v'].includes(mode))throw Error('Unknown alignment mode');if(!Array.isArray(ids))throw Error('Node ids must be an array');const map=new Map(doc.nodes.map(n=>[n.id,n]));const candidates=doc.nodes.filter(n=>ids.includes(n.id)&&effectiveNodeState(doc,n).visible&&!effectiveNodeState(doc,n).locked),candidateIds=new Set(candidates.map(n=>n.id));
+ const chosen=candidates.filter(n=>{let p=n.parentId;while(p){if(candidateIds.has(p))return false;p=map.get(p).parentId;}return true;});if(!chosen.length)return doc;
+ const entries=chosen.map(n=>({n,b:bounds(n,map)}));
+ if(mode.startsWith('distribute-')){if(entries.length<3)return doc;const horizontal=mode==='distribute-h',start=horizontal?'left':'top',end=horizontal?'right':'bottom';entries.sort((a,b)=>a.b[start]-b.b[start]);const first=entries[0].b[start],last=entries.at(-1).b[end],total=entries.reduce((sum,e)=>sum+e.b[end]-e.b[start],0),gap=(last-first-total)/(entries.length-1);let position=first;for(const e of entries){const delta=position-e.b[start];translate(e.n,horizontal?delta:0,horizontal?0:delta,map);position+=e.b[end]-e.b[start]+gap;}return validateLayout(doc);}
+ const box=target==='selection'&&entries.length>1?{left:Math.min(...entries.map(e=>e.b.left)),right:Math.max(...entries.map(e=>e.b.right)),top:Math.min(...entries.map(e=>e.b.top)),bottom:Math.max(...entries.map(e=>e.b.bottom))}:{left:0,top:0,right:doc.canvas.width,bottom:doc.canvas.height};
+ for(const {n,b}of entries){let dx=0,dy=0;if(mode==='left')dx=box.left-b.left;if(mode==='right')dx=box.right-b.right;if(mode==='hcenter'||mode==='center')dx=(box.left+box.right-b.left-b.right)/2;if(mode==='top')dy=box.top-b.top;if(mode==='bottom')dy=box.bottom-b.bottom;if(mode==='vcenter'||mode==='center')dy=(box.top+box.bottom-b.top-b.bottom)/2;translate(n,dx,dy,map);}return validateLayout(doc);
+}

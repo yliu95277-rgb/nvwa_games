@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "viewport": [
+    1672,
+    941
+  ],
+  "checks": [
+    "runtime no console errors",
+    "click building upgrade",
+    "click recruit",
+    "refresh persistence",
+    "click build towers and start wave",
+    "3 wave victory accelerated simulation",
+    "reward persisted"
+  ],
+  "state": {
+    "status": "won",
+    "lives": 10,
+    "save": {
+      "version": 1,
+      "resources": {
+        "gold": 130600,
+        "grain": 37600,
+        "jade": 1180
+      },
+      "levels": {
+        "palace": 2,
+        "tavern": 1,
+        "barracks": 1,
+        "forge": 1,
+        "market": 1
+      },
+      "heroes": [
+        "关羽",
+        "张飞"
+      ],
+      "dailyClaimed": false,
+      "mailClaimed": false,
+      "victories": 1
+    }
+  },
+  "independentProject": "artifacts/standalone/three-kingdoms-city",
+  "port": 8831
+}
