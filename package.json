@@ -6,7 +6,9 @@
   "description": "Portable local 2D game layout editor with an optional Cocos city adapter",
   "scripts": {
     "start": "node tools/serve.mjs",
-    "test": "node tools/test-layout.mjs"
+    "test": "node tools/test-layout.mjs && node tools/test-alignment.mjs"
   },
-  "engines": { "node": ">=22" }
+  "engines": {
+    "node": ">=22"
+  }
 }
